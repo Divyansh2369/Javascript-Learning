@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #heading {
+        color: blueviolet;
+        text-align: center;
+      }
+
+      #events {
+        text-align: center;
+        display: flex;
+        justify-content: space-evenly;
+      }
+
+      .button {
+        background-color: white; /* Green */
+        color: black;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        border: 2px solid black;
+      }
+
+      .button1:hover {
+        background-color: green; /* Green */
+        color: white;
+        border: none;
+      }
+
+      .button2:hover {
+        background-color: red; /* Green */
+        color: white;
+        border: none;
+      }
+
+      .button3:hover {
+        background-color: navy; /* Green */
+        color: white;
+        border: none;
+      }
+
+      .button4:hover {
+        background-color: orange; /* Green */
+        color: white;
+        border: none;
+      }
+
+      #mouseContainer {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 64px;
+      }
+
+      #mouse {
+        background-color: orange; /* Green */
+        color: white;
+        border: none;
+      }
+
+      #enterLeave {
+        background-color: chocolate; /* Green */
+        color: white;
+        border: none;
+      }
+
+      #keycheck {
+        padding: 8px 16px;
+        border-radius: 4px;
+      }
+
+      #keyboardContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      input #keycheck:focus {
+        border-color: blue;
+      }
+
+      #inputContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #timingContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: crimson;
+        color: white;
+      }
+
+      .orderButton {
+        display: block;
+        padding: 16px 48px;
+        border: 2px solid white;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        color: crimson;
+        font-weight: bold;
+        font-size: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1 id="heading">Events</h1>
+    </div>
+
+    <div id="events">
+      <!-- 1st Way : Simple Inline function -->
+      <button class="button button1" onclick="alert(`I'm inline function`)">
+        Simple alert
+      </button>
+
+      <!-- 2nd Way : Calling a user defined function -->
+      <button class="button button2" onclick="userDefinedFunction()">
+        Calling a function
+      </button>
+
+      <!-- 3rd Way : Using the property -->
+      <a href="#" class="button button3" id="thirdway">Using property</a>
+
+      <!-- 4th Way : Using addEventListener -->
+      <a href="#" class="button button4" id="fourthway">Using event listener</a>
+    </div>
+
+    <!-- Mouse Events -->
+    <div id="mouseContainer">
+      <button
+        id="mouse"
+        class="button"
+        onmousedown="onmouseDown()"
+        onmouseup="onmouseUp()"
+      >
+        Mouse Event
+      </button>
+
+      <div id="enterLeave" class="button">In or Out</div>
+    </div>
+
+    <!-- Keyboard Events -->
+    <div id="keyboardContainer">
+      <div><p id="keys"></p></div>
+      <input
+        id="keycheck"
+        type="text"
+        onkeypress="onkeyPress()"
+        onkeydown="onkeyDown()"
+        onkeyup="onkeyUp()"
+      />
+      <div><p id="keyupdown"></p></div>
+    </div>
+
+    <!-- Input Events -->
+    <div id="inputContainer">
+      <h2 style="color: rgb(65, 4, 170)">Input Events</h2>
+      <div>
+        <label for="name">Your Name</label>
+        <input
+          type="text"
+          id="name"
+          style="padding: 8px 16px"
+          onchange="enterName()"
+        />
+      </div>
+      <div style="margin-top: 20px">
+        <label for="coffee">Which coffee would you like to have?</label>
+        <select id="coffee" name="coffee" onchange="selectCoffee()">
+          <option value="">Select an option</option>
+          <option value="latte">latte</option>
+          <option value="cappuchino">cappuchino</option>
+          <option value="espresso">espresso</option>
+        </select>
+      </div>
+      <p id="orderReady" style="color: rgb(15, 161, 214); font-size: 24px"></p>
+    </div>
+
+    <!-- Timing Based Events -->
+    <div id="timingContainer">
+      <h2>Farm Fresh Fruits</h2>
+      <h3 id="timer"></h3>
+      <p id="delivery"></p>
+      <button id="orderRequest" class="orderButton">Order Fruits</button>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+      // User defined function
+      const userDefinedFunction = () => {
+        alert(`User defined funcion`);
+      };
+
+      //    using property -- can perform only one function - overrides the property
+      const thirdWay = document.getElementById("thirdway");
+      thirdWay.onclick = () => {
+        alert("Using property");
+      };
+
+      thirdWay.onclick = () => {
+        console.log("Using property");
+      };
+
+      //   using event listener - can perform different actions
+      const fourthWay = document.querySelector("#fourthway");
+      fourthWay.addEventListener("click", () => {
+        alert("Using event listener");
+      });
+
+      fourthWay.addEventListener("click", () => {
+        console.log("Using event listener");
+      });
+
+      // SHOWING MOUSE EVENTS
+      const mouse = document.querySelector("#mouse");
+
+      const onmouseDown = () => {
+        mouse.innerHTML = "Mouse button pressed";
+        mouse.style.backgroundColor = "red";
+      };
+
+      const onmouseUp = () => {
+        mouse.innerHTML = "Mouse button released";
+        mouse.style.backgroundColor = "green";
+      };
+
+      const enterLeave = document.querySelector("#enterLeave");
+
+      enterLeave.addEventListener("mouseenter", () => {
+        enterLeave.innerHTML = "Mouse enters the div";
+        enterLeave.style.backgroundColor = "crimson";
+      });
+
+      enterLeave.addEventListener("mouseleave", () => {
+        enterLeave.innerHTML = "Mouse leaves the div";
+        enterLeave.style.backgroundColor = "rebeccapurple";
+      });
+
+      // SHOWING KEYBOARD EVENTS
+
+      const text = document.querySelector("#keys");
+      const onkeyPress = () => {
+        text.innerHTML = `the key pressed is: ${event.key}`;
+      };
+
+      const keyupdown = document.querySelector("#keyupdown");
+
+      const onkeyDown = () => {
+        keyupdown.innerHTML = `the key is down`;
+      };
+
+      const onkeyUp = () => {
+        keyupdown.innerHTML = `the key is up`;
+      };
+
+      const enterName = () => {
+        console.log(event.target.value);
+        document.querySelector("#name").innerHTML = event.target.value;
+      };
+
+      const selectCoffee = () => {
+        const name = document.querySelector("#name").value;
+        const coffee = event.target.value;
+        document.querySelector(
+          "#orderReady"
+        ).innerHTML = `Mr. ${name} your ${coffee} is ready, please collect your order from the counter`;
+      };
+
+      // TIMING BASED EVENTS
+
+      const preparingOrder = document.querySelector("#orderRequest");
+      preparingOrder.addEventListener("click", () => {
+        let time = new Date().toLocaleTimeString();
+        const timer = document.querySelector("#timer");
+        timer.innerHTML = time;
+        // setInterval()
+        // executes a function repeatedly after waiting for specified number of milliseconds between each execution
+        const interval = setInterval(() => {
+          let time = new Date().toLocaleTimeString();
+          timer.innerHTML = time;
+        }, 1000);
+
+        const order = document.querySelector("#delivery");
+        order.innerHTML = "Your order is being prepared";
+
+        // setTimeout()
+        // executes a function after waiting for a specified number of milliseconds
+        setTimeout(() => {
+          const orderNumber = Math.trunc(Math.random() * 100);
+          order.innerHTML = `Order No: ${orderNumber} is ready`;
+          clearInterval(interval);
+        }, 5000);
+      });
+    </script>
+  </body>
+</html>

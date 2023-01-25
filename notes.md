@@ -938,7 +938,7 @@ console.log(`My name is ${fName} ${lName} and I'm ${age} years old`)
 
     This method ends a specified number of spaces at the beginning of the string. This method creates a new string and doesn't mutate the original string.
 
-    `targetLength = number of spaces`
+    `targetLength = total length of string intended`
 
     `padStart(targetLength, padString)`
 
@@ -951,7 +951,7 @@ console.log(`My name is ${fName} ${lName} and I'm ${age} years old`)
 
     This method ends a specified number of spaces at the end of the string. This method creates a new string and doesn't mutate the original string.
 
-    `targetLength = number of spaces`
+    `targetLength = total length of string intended`
 
     `padEnd(targetLength, padString)`
 
@@ -1188,3 +1188,186 @@ myName = 'Divyansh'
   So when a variable is used the engine will traverse the scope chain until it finds the variable.
 
 #### Lexical Scoping
+
+- A lexical environment is a structure that holds identifier-variable mapping.
+- A lexical environment is a place where variables and references to the objects are stored.
+- A new lexical environment is created for every lexical scope after the code in that scope is execeuted.
+- A lexical scope is an area where a variable is visible and accessible.
+- Lexical scoping means that variables and functions in the outer scope are accessible inside the
+  inner scope but vice-versa is not true.
+
+  ```
+  let greeting = 'Hello';
+  function greet() {
+    let name = 'Peter';
+    console.log(`${greeting} ${name}`);
+  }
+  greet();
+  {
+    let greeting = 'Hello World!'
+    console.log(greeting);
+  }
+  ```
+
+  ```
+  globalLexicalEnvironment = {
+    greeting: 'Hello'
+    greet: <ref. to greet function>
+    outer: <null>
+  }
+  ```
+
+  ```
+  functionLexicalEnvironment = {
+    name: 'Peter'
+    outer: <globalLexicalEnvironment>
+  }
+  ```
+
+  ```
+  blockLexicalEnvironment = {
+    greeting: 'Hello World',
+    outer: <globalLexicalEnvironment>
+  }
+  ```
+
+### Closures
+
+A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment). In other words, a closure gives you access to an outer function's scope from an inner function. In JavaScript, closures are created every time a function is created, at function creation time.
+
+```
+function outer(x) {
+  let y = 7;
+  function inner() {
+    console.log(x+y);
+  }
+  return inner;
+}
+
+const myFunc = outer();
+console.dir(myFunc)   //  ƒ inner()
+
+the inner function forms a closure when it was created bundled together with it's lexical environment.
+
+outerLexicalEnvironment = {
+  y: 7;
+  inner: <ref. to inner function>
+  outer: <globalLexicalEnvironment>
+}
+
+innerLexicalEnvironment = {
+  outer: <outerLexicalEnvironment>
+}
+```
+
+### Function Currying
+
+Currying is a technique of transforming a function of several arguments into several functions of single argument in sequence.
+
+- #### Normal function
+
+  ```
+  function calculateVolume(length, breadth, height) {
+          return length * breadth * height;
+  }
+
+  console.log(calculateVolume(4, 5, 6));  // 120
+  ```
+
+- #### Curried function
+
+  ```
+  function calculateVolume(length){
+    return function(breadth){
+      return function(height){
+        return length * breadth * height;
+      }
+    }
+  }
+  console.log(calculateVolume(4, 5, 6));  // 120
+  ```
+
+- #### Curried fat arrow function
+
+  ```
+  calculateVolume = (length) => (breadth) => (height) => length _ breadth _ height;
+  console.log(calculateVolume(4, 5, 6)); // 120
+
+  ```
+
+### Promises
+
+- The Promise object represents the eventual completion (or failure) of an asynchronous operation and its resulting value.
+- A Promise is a proxy for a value not necessarily known when the promise is created. It allows you to associate handlers with an asynchronous action's eventual success value or failure reason.
+
+* A Promise is in one of these states:
+
+  - pending: initial state, neither fulfilled nor rejected.
+  - fulfilled: meaning that the operation was completed successfully.
+  - rejected: meaning that the operation failed.
+
+  #### Constructor Syntax:
+
+  The promise constructor takes in a executor function as an argument.
+
+  ```
+  const myPromise = new Promise(executor);
+  ```
+
+  #### Executor function Syntax:
+
+  The executor function takes in two arguments:
+
+  - resolve function: called when the promise is fulfilled
+  - reject function: called when the promise is rejected due to an error
+
+  ```
+  const myPromise = new Promise((resolve,reject) => {
+      if(condition){
+        resolve();
+      }else{
+        reject()
+      }
+  });
+  ```
+
+  #### then(), catch() and finally methods()
+
+  - ##### then()
+
+    then() method can take two arguments:
+
+    - first: a resolve method
+    - second: a reject method
+
+  - ##### catch()
+
+    catch() method can take in only one argument, i.e. a reject method.
+
+  ```
+  const cheer = (name) => {
+    return new Promise((resolve,reject) => {
+        resolve(`Keep grinding ${name}`);
+    })
+  }
+
+  const myPromise = new Promise((resolve, reject) => {
+      let number = Math.round((Math.random() * 10)/2)
+      if(number === 3){
+        reject('Shove it up your ass 🖕')
+      }else{
+        setTimeout(() => {
+          let name = 'Divyansh'
+          resolve(name)
+        })
+      }
+  })
+
+  myPromise.then((name) => {
+    return cheer(name)
+  }).then((cheerup)=>{
+    console.log(cheerup)
+  }).catch((err) => {
+    console.error(err)
+  })
+  ```
